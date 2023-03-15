@@ -1,0 +1,1071 @@
+<?php
+
+add_action('wp_ajax_user_settings_update', 'user_settings_update');
+function user_settings_update()
+{
+    $user_id = 0;
+    if (isset($_POST['user_id'])) {
+        $user_id = intval($_POST['user_id']);
+    }
+
+    if (get_current_user_id() == $user_id){
+        $user_timezone = '';
+        $user_date_display = '';
+        $user_routines = '';
+
+        if (isset($_POST['user_timezone'])) {
+            $user_timezone = $_POST['user_timezone'];
+        }
+        if (isset($_POST['user_routines'])) {
+            $user_routines = $_POST['user_routines'];
+        }
+        if (isset($_POST['user_date_display'])) {
+            $user_date_display = $_POST['user_date_display'];
+        }
+
+
+        update_user_meta($user_id, 'user_timezone', $user_timezone);
+        update_user_meta($user_id, 'user_date_display', $user_date_display);
+        update_user_meta($user_id, 'user_routines', $user_routines);
+
+    }
+    die();
+}
+
+add_action('wp_ajax_imitate_day_update', 'imitate_day_update');
+function imitate_day_update()
+{
+    if (current_user_can('administrator')) {
+
+        $day = 0;
+        if (isset($_POST['day'])) {
+            $day = intval($_POST['day']);
+        }
+
+        update_post_meta(16238,'imitate_day',$day);
+
+    }
+    die();
+}
+
+
+add_action('wp_ajax_add_habit_month_goal', 'add_habit_month_goal');
+function add_habit_month_goal()
+{
+    $user_id = 0;
+    if (isset($_POST['user_id'])) {
+        $user_id = intval($_POST['user_id']);
+    }
+
+    if (get_current_user_id() == $user_id){
+        $type = '';
+        $text = '';
+        $link = '';
+        $number = '';
+        $completed = '';
+        $day_repeat_type = '';
+        $day_repeat_days = '';
+        $action_time = '';
+        $date_created = '';
+
+        if (isset($_POST['type'])) {
+            $type = $_POST['type'];
+        }
+        if (isset($_POST['text'])) {
+            $text = $_POST['text'];
+        }
+        if (isset($_POST['link'])) {
+            $link = $_POST['link'];
+        }
+        if (isset($_POST['number'])) {
+            $number = $_POST['number'];
+        }
+        if (isset($_POST['completed'])) {
+            $completed = $_POST['completed'];
+        }
+        if (isset($_POST['day_repeat_type'])) {
+            $day_repeat_type = $_POST['day_repeat_type'];
+        }
+        if (isset($_POST['day_repeat_days'])) {
+            $day_repeat_days = $_POST['day_repeat_days'];
+        }
+        if (isset($_POST['action_time'])) {
+            $action_time = $_POST['action_time'];
+        }
+        if (isset($_POST['date_created'])) {
+            $date_created = $_POST['date_created'];
+        }
+
+        global $wpdb;
+        $wpdb->insert($wpdb->prefix."habit_data",
+            array(
+                'type'=>$type,
+                'text'=>$text,
+                'link'=>$link,
+                'number'=>$number,
+                'completed'=>$completed,
+                'day_repeat_type'=>$day_repeat_type,
+                'day_repeat_days'=>$day_repeat_days,
+                'action_time'=>$action_time,
+                'timestamp'=>time(),
+                'date_created'=>$date_created,
+                'user_id'=>get_current_user_id(),
+            )
+        );
+    }
+    die();
+}
+
+
+add_action('wp_ajax_add_habit_note', 'add_habit_note');
+function add_habit_note()
+{
+    $user_id = 0;
+    if (isset($_POST['user_id'])) {
+        $user_id = intval($_POST['user_id']);
+    }
+
+    if (get_current_user_id() == $user_id){
+        $type = '';
+        $text = '';
+        $link = '';
+        $number = '';
+        $completed = '';
+        $day_repeat_type = '';
+        $day_repeat_days = '';
+        $action_time = '';
+        $date_created = '';
+
+        if (isset($_POST['type'])) {
+            $type = $_POST['type'];
+        }
+        if (isset($_POST['text'])) {
+            $text = $_POST['text'];
+        }
+        if (isset($_POST['link'])) {
+            $link = $_POST['link'];
+        }
+        if (isset($_POST['number'])) {
+            $number = $_POST['number'];
+        }
+        if (isset($_POST['completed'])) {
+            $completed = $_POST['completed'];
+        }
+        if (isset($_POST['day_repeat_type'])) {
+            $day_repeat_type = $_POST['day_repeat_type'];
+        }
+        if (isset($_POST['day_repeat_days'])) {
+            $day_repeat_days = $_POST['day_repeat_days'];
+        }
+        if (isset($_POST['action_time'])) {
+            $action_time = $_POST['action_time'];
+        }
+        if (isset($_POST['date_created'])) {
+            $date_created = $_POST['date_created'];
+        }
+
+        global $wpdb;
+        $wpdb->insert($wpdb->prefix."habit_data",
+            array(
+                'type'=>$type,
+                'text'=>$text,
+                'link'=>$link,
+                'number'=>$number,
+                'completed'=>$completed,
+                'day_repeat_type'=>$day_repeat_type,
+                'day_repeat_days'=>$day_repeat_days,
+                'action_time'=>$action_time,
+                'timestamp'=>time(),
+                'date_created'=>$date_created,
+                'user_id'=>get_current_user_id(),
+            )
+        );
+    }
+    die();
+}
+
+
+
+
+
+add_action('wp_ajax_add_month_action', 'add_month_action');
+function add_month_action()
+{
+    $user_id = 0;
+    if (isset($_POST['user_id'])) {
+        $user_id = intval($_POST['user_id']);
+    }
+
+    if (get_current_user_id() == $user_id){
+        $type = '';
+        $text = '';
+        $link = '';
+        $number = '';
+        $completed = '';
+        $day_repeat_type = '';
+        $day_repeat_days = '';
+        $action_time = '';
+        $date_created = '';
+        $dates_arr = array();
+
+        if (isset($_POST['type'])) {
+            $type = $_POST['type'];
+        }
+        if (isset($_POST['text'])) {
+            $text = $_POST['text'];
+        }
+        if (isset($_POST['link'])) {
+            $link = $_POST['link'];
+        }
+        if (isset($_POST['number'])) {
+            $number = $_POST['number'];
+        }
+        if (isset($_POST['completed'])) {
+            $completed = $_POST['completed'];
+        }
+        if (isset($_POST['day_repeat_type'])) {
+            $day_repeat_type = $_POST['day_repeat_type'];
+        }
+        if (isset($_POST['day_repeat_days'])) {
+            $day_repeat_days = $_POST['day_repeat_days'];
+        }
+        if (isset($_POST['action_time'])) {
+            $action_time = $_POST['action_time'];
+        }
+        if (isset($_POST['date_created'])) {
+            $date_created = $_POST['date_created'];
+        }
+        if (isset($_POST['dates_arr'])) {
+            $dates_arr = $_POST['dates_arr'];
+        }
+
+        global $wpdb;
+        foreach ($dates_arr as $date){
+            $date_created = $date;
+
+            $wpdb->insert($wpdb->prefix."habit_data",
+                array(
+                    'type'=>$type,
+                    'text'=>$text,
+                    'link'=>$link,
+                    'number'=>$number,
+                    'completed'=>$completed,
+                    'day_repeat_type'=>$day_repeat_type,
+                    'day_repeat_days'=>$day_repeat_days,
+                    'action_time'=>$action_time,
+                    'timestamp'=>time(),
+                    'date_created'=>$date_created,
+                    'user_id'=>get_current_user_id(),
+                )
+            );
+        }
+    }
+    die();
+}
+
+
+
+add_action('wp_ajax_add_week_task', 'add_week_task');
+function add_week_task()
+{
+    $user_id = 0;
+    if (isset($_POST['user_id'])) {
+        $user_id = intval($_POST['user_id']);
+    }
+
+    if (get_current_user_id() == $user_id){
+        $type = '';
+        $text = '';
+        $link = '';
+        $number = '';
+        $completed = '';
+        $day_repeat_type = '';
+        $day_repeat_days = '';
+        $action_time = '';
+        $date_created = '';
+
+        if (isset($_POST['type'])) {
+            $type = $_POST['type'];
+        }
+        if (isset($_POST['text'])) {
+            $text = $_POST['text'];
+        }
+        if (isset($_POST['link'])) {
+            $link = $_POST['link'];
+        }
+        if (isset($_POST['number'])) {
+            $number = $_POST['number'];
+        }
+        if (isset($_POST['completed'])) {
+            $completed = $_POST['completed'];
+        }
+        if (isset($_POST['day_repeat_type'])) {
+            $day_repeat_type = $_POST['day_repeat_type'];
+        }
+        if (isset($_POST['day_repeat_days'])) {
+            $day_repeat_days = $_POST['day_repeat_days'];
+        }
+        if (isset($_POST['action_time'])) {
+            $action_time = $_POST['action_time'];
+        }
+        if (isset($_POST['date_created'])) {
+            $date_created = $_POST['date_created'];
+        }
+
+        global $wpdb;
+        $wpdb->insert($wpdb->prefix."habit_data",
+            array(
+                'type'=>$type,
+                'text'=>$text,
+                'link'=>$link,
+                'number'=>$number,
+                'completed'=>$completed,
+                'day_repeat_type'=>$day_repeat_type,
+                'day_repeat_days'=>$day_repeat_days,
+                'action_time'=>$action_time,
+                'timestamp'=>time(),
+                'date_created'=>$date_created,
+                'user_id'=>get_current_user_id(),
+            )
+        );
+
+    }
+    die();
+}
+
+
+
+
+
+
+add_action('wp_ajax_add_week_appointment', 'add_week_appointment');
+function add_week_appointment()
+{
+    $user_id = 0;
+    if (isset($_POST['user_id'])) {
+        $user_id = intval($_POST['user_id']);
+    }
+
+    if (get_current_user_id() == $user_id){
+        $type = '';
+        $text = '';
+        $link = '';
+        $number = '';
+        $completed = '';
+        $day_repeat_type = '';
+        $day_repeat_days = '';
+        $action_time = '';
+        $date_created = '';
+
+        if (isset($_POST['type'])) {
+            $type = $_POST['type'];
+        }
+        if (isset($_POST['text'])) {
+            $text = $_POST['text'];
+        }
+        if (isset($_POST['link'])) {
+            $link = $_POST['link'];
+        }
+        if (isset($_POST['number'])) {
+            $number = $_POST['number'];
+        }
+        if (isset($_POST['completed'])) {
+            $completed = $_POST['completed'];
+        }
+        if (isset($_POST['day_repeat_type'])) {
+            $day_repeat_type = $_POST['day_repeat_type'];
+        }
+        if (isset($_POST['day_repeat_days'])) {
+            $day_repeat_days = $_POST['day_repeat_days'];
+        }
+        if (isset($_POST['action_time'])) {
+            $action_time = $_POST['action_time'];
+        }
+        if (isset($_POST['date_created'])) {
+            $date_created = $_POST['date_created'];
+        }
+
+        global $wpdb;
+        $wpdb->insert($wpdb->prefix."habit_data",
+            array(
+                'type'=>$type,
+                'text'=>$text,
+                'link'=>$link,
+                'number'=>$number,
+                'completed'=>$completed,
+                'day_repeat_type'=>$day_repeat_type,
+                'day_repeat_days'=>$day_repeat_days,
+                'action_time'=>$action_time,
+                'timestamp'=>time(),
+                'date_created'=>$date_created,
+                'user_id'=>get_current_user_id(),
+            )
+        );
+
+    }
+    die();
+}
+
+
+
+
+add_action('wp_ajax_add_daily_action', 'add_daily_action');
+function add_daily_action()
+{
+    $user_id = 0;
+    if (isset($_POST['user_id'])) {
+        $user_id = intval($_POST['user_id']);
+    }
+
+    if (get_current_user_id() == $user_id){
+        $type = '';
+        $text = '';
+        $link = '';
+        $number = '';
+        $completed = '';
+        $day_repeat_type = '';
+        $day_repeat_days = '';
+        $action_time = '';
+        $date_created = '';
+        $actions_arr = array();
+
+        if (isset($_POST['type'])) {
+            $type = $_POST['type'];
+        }
+        if (isset($_POST['day_repeat_type'])) {
+            $day_repeat_type = $_POST['day_repeat_type'];
+        }
+        if (isset($_POST['day_repeat_days'])) {
+            $day_repeat_days = $_POST['day_repeat_days'];
+        }
+        if (isset($_POST['action_time'])) {
+            $action_time = $_POST['action_time'];
+        }
+        if (isset($_POST['date_created'])) {
+            $date_created = $_POST['date_created'];
+        }
+
+        if (isset($_POST['actions_arr'])) {
+            $actions_arr = $_POST['actions_arr'];
+        }
+
+        global $wpdb;
+
+        $rows = $wpdb->get_results("
+                        SELECT id FROM ".$wpdb->prefix."habit_data 
+                        WHERE 
+                        user_id=".get_current_user_id()." 
+                        AND type='".$type."'
+                        AND date_created='".$date_created."'
+                        ORDER BY number ASC
+                        ");
+        if ($rows){
+            foreach ($rows as $row){
+                $remove_id = $row->id;
+                $wpdb->delete( $wpdb->prefix."habit_data",
+                    [
+                        'id' => $remove_id
+                    ]);
+            }
+        }
+
+        foreach ($actions_arr as $action){
+            $text = $action['text'];
+            $link = $action['link'];
+            $number = $action['number'];
+            $completed = $action['completed'];
+            $day_repeat_type = $action['type'];
+            $day_repeat_days = $action['repeat_days'];
+
+            $wpdb->insert($wpdb->prefix."habit_data",
+                array(
+                    'type'=>$type,
+                    'text'=>$text,
+                    'link'=>$link,
+                    'number'=>$number,
+                    'completed'=>$completed,
+                    'day_repeat_type'=>$day_repeat_type,
+                    'day_repeat_days'=>$day_repeat_days,
+                    'action_time'=>$action_time,
+                    'timestamp'=>time(),
+                    'date_created'=>$date_created,
+                    'user_id'=>get_current_user_id(),
+                )
+            );
+
+            $regular_action = $wpdb->get_results(" 
+                SELECT * FROM ".$wpdb->prefix."habit_data 
+                WHERE user_id=".get_current_user_id()." 
+                AND type='regular_action'  
+                AND text='".$text."'
+                AND link='".$link."'   
+                ORDER BY number ASC 
+            ");
+
+            if (!$regular_action){
+                $wpdb->insert($wpdb->prefix."habit_data",
+                    array(
+                        'type'=>'regular_action',
+                        'text'=>$text,
+                        'link'=>$link,
+                        'number'=>'',
+                        'completed'=>0,
+                        'day_repeat_type'=>$day_repeat_type,
+                        'day_repeat_days'=>$day_repeat_days,
+                        'action_time'=>'',
+                        'timestamp'=>time(),
+                        'date_created'=>$date_created,
+                        'user_id'=>get_current_user_id(),
+                    )
+                );
+            }
+        }
+    }
+    die();
+}
+
+
+
+add_action('wp_ajax_plan_your_week', 'plan_your_week');
+function plan_your_week()
+{
+    $user_id = 0;
+    if (isset($_POST['user_id'])) {
+        $user_id = intval($_POST['user_id']);
+    }
+
+    if (get_current_user_id() == $user_id){
+        $type = '';
+        $text = '';
+        $link = '';
+        $number = '';
+        $completed = '';
+        $day_repeat_type = '';
+        $day_repeat_days = '';
+        $action_time = '';
+        $date_created = '';
+        $week_start_date = '';
+        $week_today_date = '';
+
+        $goal_arr = array();
+        $dates_arr = array();
+        $focus_arr = array();
+
+        if (isset($_POST['week_start_date'])) {
+            $week_start_date = $_POST['week_start_date'];
+        }
+        if (isset($_POST['week_today_date'])) {
+            $week_today_date = $_POST['week_today_date'];
+        }
+        if (isset($_POST['goal_arr'])) {
+            $goal_arr = $_POST['goal_arr'];
+        }
+        if (isset($_POST['dates_arr'])) {
+            $dates_arr = $_POST['dates_arr'];
+        }
+        if (isset($_POST['focus_arr'])) {
+            $focus_arr = $_POST['focus_arr'];
+        }
+
+        global $wpdb;
+
+        $days_numbers = array();
+
+        if ($focus_arr){
+            if ($dates_arr){
+                $type = 'daily_focus';
+                foreach ($dates_arr as $date){
+                    $date_created = $date['date'];
+                    $days_numbers[] = date('N',strtotime($date_created));
+                    foreach ($focus_arr as $focus){
+                        $text = $focus['text'];
+                        $action_time = $focus['time'];
+                        $number = $focus['number'];
+
+                        $wpdb->insert($wpdb->prefix."habit_data",
+                            array(
+                                'type'=>$type,
+                                'text'=>$text,
+                                'link'=>$link,
+                                'number'=>$number,
+                                'completed'=>$completed,
+                                'day_repeat_type'=>$day_repeat_type,
+                                'day_repeat_days'=>$day_repeat_days,
+                                'action_time'=>$action_time,
+                                'timestamp'=>time(),
+                                'date_created'=>$date_created,
+                                'user_id'=>get_current_user_id(),
+                            )
+                        );
+                    }
+                }
+            }
+        }
+
+        $inserted_ids = array();
+
+        if ($focus_arr){
+            if ($dates_arr){
+                $type = 'daily_focus_week';
+                $date_created = $week_start_date;
+                foreach ($focus_arr as $focus){
+                    $text = $focus['text'];
+                    $action_time = $focus['time'];
+                    $number = $focus['number'];
+
+                    $wpdb->insert($wpdb->prefix."habit_data",
+                        array(
+                            'type'=>$type,
+                            'text'=>$text,
+                            'link'=>$link,
+                            'number'=>$number,
+                            'completed'=>$completed,
+                            'day_repeat_type'=>$day_repeat_type,
+                            'day_repeat_days'=>$day_repeat_days,
+                            'action_time'=>$action_time,
+                            'timestamp'=>time(),
+                            'date_created'=>$date_created,
+                            'user_id'=>get_current_user_id(),
+                        )
+                    );
+                    $inserted_ids[] = $wpdb->insert_id;
+                }
+            }
+        }
+
+        if ($goal_arr){
+            $type = 'week_goal';
+            $date_created = $week_start_date;
+            $link = '';
+            foreach ($goal_arr as $goal) {
+                $text = $goal['text'];
+                $number = $goal['number'];
+
+                $wpdb->insert($wpdb->prefix."habit_data",
+                    array(
+                        'type'=>$type,
+                        'text'=>$text,
+                        'link'=>$link,
+                        'number'=>$number,
+                        'completed'=>$completed,
+                        'day_repeat_type'=>$day_repeat_type,
+                        'day_repeat_days'=>$day_repeat_days,
+                        'action_time'=>$action_time,
+                        'timestamp'=>time(),
+                        'date_created'=>$date_created,
+                        'user_id'=>get_current_user_id(),
+                    )
+                );
+            }
+        }
+
+        $ids_string = '';
+        foreach ($inserted_ids as $id){
+            $ids_string = $ids_string .','.$id;
+        }
+        $ids_string = ltrim($ids_string, ',');
+
+        $days_string = '';
+        foreach ($days_numbers as $day){
+            $days_string = $days_string .','.$day;
+        }
+        $days_string = ltrim($days_string, ',');
+
+        $date_created = $week_start_date;
+        $wpdb->insert($wpdb->prefix."habit_data",
+            array(
+                'type'=>'week_planned',
+                'text'=>$week_today_date,
+                'link'=>$ids_string,
+                'number'=>0,
+                'completed'=>0,
+                'day_repeat_type'=>'',
+                'day_repeat_days'=>'',
+                'action_time'=>$days_string,
+                'timestamp'=>time(),
+                'date_created'=>$date_created,
+                'user_id'=>get_current_user_id(),
+            )
+        );
+
+    }
+    die();
+}
+
+
+
+add_action('wp_ajax_plan_tomorrow_day', 'plan_tomorrow_day');
+function plan_tomorrow_day()
+{
+
+    $user_id = 0;
+    if (isset($_POST['user_id'])) {
+        $user_id = intval($_POST['user_id']);
+    }
+
+    if (get_current_user_id() == $user_id){
+        $type = '';
+        $text = '';
+        $link = '';
+        $number = '';
+        $completed = '';
+        $day_repeat_type = '';
+        $day_repeat_days = '';
+        $action_time = '';
+        $date_created = '';
+        $day_badge = 0;
+
+        $arr_focus = array();
+        $arr_tasks = array();
+        $arr_appointments = array();
+
+        if (isset($_POST['date_today'])) {
+            $date_today = $_POST['date_today'];
+        }
+        if (isset($_POST['date_tomorrow'])) {
+            $date_tomorrow = $_POST['date_tomorrow'];
+        }
+        if (isset($_POST['day_badge'])) {
+            $day_badge = $_POST['day_badge'];
+        }
+        if (isset($_POST['badge_stats'])) {
+            $badge_stats = $_POST['badge_stats'];
+        }
+
+        if (isset($_POST['arr_focus'])) {
+            $arr_focus = $_POST['arr_focus'];
+        }
+        if (isset($_POST['arr_tasks'])) {
+            $arr_tasks = $_POST['arr_tasks'];
+        }
+        if (isset($_POST['arr_appointments'])) {
+            $arr_appointments = $_POST['arr_appointments'];
+        }
+
+        global $wpdb;
+        $rows = $wpdb->get_results("
+                        SELECT id FROM ".$wpdb->prefix."habit_data 
+                        WHERE 
+                        user_id=".get_current_user_id()." 
+                        AND type='daily_focus'
+                        AND date_created='".$date_tomorrow."'
+                        ORDER BY number ASC
+                        ");
+        if ($rows){
+            foreach ($rows as $row){
+                $remove_id = $row->id;
+                $wpdb->delete( $wpdb->prefix."habit_data",
+                    [
+                        'id' => $remove_id
+                    ]);
+            }
+        }
+        $rows = $wpdb->get_results("
+                        SELECT id FROM ".$wpdb->prefix."habit_data 
+                        WHERE 
+                        user_id=".get_current_user_id()." 
+                        AND type='task'
+                        AND date_created='".$date_tomorrow."'
+                        ORDER BY number ASC
+                        ");
+        if ($rows){
+            foreach ($rows as $row){
+                $remove_id = $row->id;
+                $wpdb->delete( $wpdb->prefix."habit_data",
+                    [
+                        'id' => $remove_id
+                    ]);
+            }
+        }
+        $rows = $wpdb->get_results("
+                        SELECT id FROM ".$wpdb->prefix."habit_data 
+                        WHERE 
+                        user_id=".get_current_user_id()." 
+                        AND type='appointment'
+                        AND date_created='".$date_tomorrow."'
+                        ORDER BY number ASC
+                        ");
+        if ($rows){
+            foreach ($rows as $row){
+                $remove_id = $row->id;
+                $wpdb->delete( $wpdb->prefix."habit_data",
+                    [
+                        'id' => $remove_id
+                    ]);
+            }
+        }
+
+        $date_created = $date_tomorrow;
+
+        if ($arr_focus){
+            $type = 'daily_focus';
+            foreach ($arr_focus as $arr_item) {
+                $number = $arr_item['number'];
+                $text = $arr_item['text'];
+                $action_time = $arr_item['time'];
+
+                $wpdb->insert($wpdb->prefix."habit_data",
+                    array(
+                        'type'=>$type,
+                        'text'=>$text,
+                        'link'=>$link,
+                        'number'=>$number,
+                        'completed'=>$completed,
+                        'day_repeat_type'=>$day_repeat_type,
+                        'day_repeat_days'=>$day_repeat_days,
+                        'action_time'=>$action_time,
+                        'timestamp'=>time(),
+                        'date_created'=>$date_created,
+                        'user_id'=>get_current_user_id(),
+                    )
+                );
+            }
+        }
+
+        if ($arr_tasks){
+            $type = 'task';
+            foreach ($arr_tasks as $arr_item) {
+                $number = $arr_item['number'];
+                $text = $arr_item['text'];
+                $action_time = '';
+
+                $wpdb->insert($wpdb->prefix."habit_data",
+                    array(
+                        'type'=>$type,
+                        'text'=>$text,
+                        'link'=>$link,
+                        'number'=>$number,
+                        'completed'=>$completed,
+                        'day_repeat_type'=>$day_repeat_type,
+                        'day_repeat_days'=>$day_repeat_days,
+                        'action_time'=>$action_time,
+                        'timestamp'=>time(),
+                        'date_created'=>$date_created,
+                        'user_id'=>get_current_user_id(),
+                    )
+                );
+            }
+        }
+
+        if ($arr_appointments){
+            $type = 'appointment';
+            foreach ($arr_appointments as $arr_item) {
+                $number = $arr_item['number'];
+                $text = $arr_item['text'];
+                $action_time = $arr_item['time'];
+
+                $wpdb->insert($wpdb->prefix."habit_data",
+                    array(
+                        'type'=>$type,
+                        'text'=>$text,
+                        'link'=>$link,
+                        'number'=>$number,
+                        'completed'=>$completed,
+                        'day_repeat_type'=>$day_repeat_type,
+                        'day_repeat_days'=>$day_repeat_days,
+                        'action_time'=>$action_time,
+                        'timestamp'=>time(),
+                        'date_created'=>$date_created,
+                        'user_id'=>get_current_user_id(),
+                    )
+                );
+            }
+        }
+
+
+        $wpdb->insert($wpdb->prefix."habit_data",
+            array(
+                'type'=>'day_planned',
+                'text'=>$badge_stats,
+                'link'=>'',
+                'number'=>'',
+                'completed'=>$day_badge,
+                'day_repeat_type'=>'',
+                'day_repeat_days'=>'',
+                'action_time'=>'',
+                'timestamp'=>time(),
+                'date_created'=>$date_today,
+                'user_id'=>get_current_user_id(),
+            )
+        );
+
+
+
+    }
+    die();
+}
+
+
+
+
+
+add_action('wp_ajax_add_habit_week_goal', 'add_habit_week_goal');
+function add_habit_week_goal()
+{
+    $user_id = 0;
+    if (isset($_POST['user_id'])) {
+        $user_id = intval($_POST['user_id']);
+    }
+
+    if (get_current_user_id() == $user_id){
+        $type = '';
+        $text = '';
+        $link = '';
+        $number = '';
+        $completed = '';
+        $day_repeat_type = '';
+        $day_repeat_days = '';
+        $action_time = '';
+        $date_created = '';
+
+        if (isset($_POST['type'])) {
+            $type = $_POST['type'];
+        }
+        if (isset($_POST['text'])) {
+            $text = $_POST['text'];
+        }
+        if (isset($_POST['link'])) {
+            $link = $_POST['link'];
+        }
+        if (isset($_POST['number'])) {
+            $number = $_POST['number'];
+        }
+        if (isset($_POST['completed'])) {
+            $completed = $_POST['completed'];
+        }
+        if (isset($_POST['day_repeat_type'])) {
+            $day_repeat_type = $_POST['day_repeat_type'];
+        }
+        if (isset($_POST['day_repeat_days'])) {
+            $day_repeat_days = $_POST['day_repeat_days'];
+        }
+        if (isset($_POST['action_time'])) {
+            $action_time = $_POST['action_time'];
+        }
+        if (isset($_POST['date_created'])) {
+            $date_created = $_POST['date_created'];
+        }
+
+        global $wpdb;
+        $wpdb->insert($wpdb->prefix."habit_data",
+            array(
+                'type'=>$type,
+                'text'=>$text,
+                'link'=>$link,
+                'number'=>$number,
+                'completed'=>$completed,
+                'day_repeat_type'=>$day_repeat_type,
+                'day_repeat_days'=>$day_repeat_days,
+                'action_time'=>$action_time,
+                'timestamp'=>time(),
+                'date_created'=>$date_created,
+                'user_id'=>get_current_user_id(),
+            )
+        );
+    }
+    die();
+}
+
+
+
+
+
+add_action('wp_ajax_habit_check_uncheck_item', 'habit_check_uncheck_item');
+function habit_check_uncheck_item()
+{
+    $user_id = 0;
+    if (isset($_POST['user_id'])) {
+        $user_id = intval($_POST['user_id']);
+    }
+
+    if (get_current_user_id() == $user_id){
+        $type = '';
+        $number = '';
+        $date_created = '';
+        $completed = '';
+
+        if (isset($_POST['type'])) {
+            $type = $_POST['type'];
+        }
+        if (isset($_POST['number'])) {
+            $number = $_POST['number'];
+        }
+        if (isset($_POST['date_created'])) {
+            $date_created = $_POST['date_created'];
+        }
+        if (isset($_POST['completed'])) {
+            $completed = $_POST['completed'];
+        }
+
+        global $wpdb;
+        $row = $wpdb->get_results("
+                        SELECT id FROM ".$wpdb->prefix."habit_data 
+                        WHERE 
+                        user_id=".get_current_user_id()." 
+                        AND type='".$type."'
+                        AND number=".$number."  
+                        AND date_created='".$date_created."'
+                        ORDER BY number ASC
+                        ");
+
+        if ($row){
+            $update_id = $row[0]->id;
+            $wpdb->update($wpdb->prefix."habit_data",
+                array('type'=>$type, 'number'=>$number, 'date_created'=>$date_created, 'completed'=>$completed ),
+                array('id'=>$update_id)
+            );
+        }
+
+    }
+    die();
+}
+
+add_action('wp_ajax_remove_habit_item', 'remove_habit_item');
+function remove_habit_item()
+{
+    $user_id = 0;
+    if (isset($_POST['user_id'])) {
+        $user_id = intval($_POST['user_id']);
+    }
+
+    if (get_current_user_id() == $user_id){
+        $type = '';
+        $number = '';
+        $date_created = '';
+
+        if (isset($_POST['type'])) {
+            $type = $_POST['type'];
+        }
+        if (isset($_POST['number'])) {
+            $number = $_POST['number'];
+        }
+        if (isset($_POST['date_created'])) {
+            $date_created = $_POST['date_created'];
+        }
+
+        global $wpdb;
+        $row = $wpdb->get_results("
+                        SELECT id FROM ".$wpdb->prefix."habit_data 
+                        WHERE 
+                        user_id=".get_current_user_id()." 
+                        AND type='".$type."'
+                        AND number=".$number."  
+                        AND date_created='".$date_created."'
+                        ORDER BY number ASC
+                        ");
+
+        if ($row){
+            $remove_id = $row[0]->id;
+            $wpdb->delete( $wpdb->prefix."habit_data",
+                [
+                    'id' => $remove_id
+                ]);
+        }
+
+    }
+    die();
+}
+/*
+global $wpdb;
+$sets = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."habit_ WHERE user_id=".$user_id." ORDER BY id ASC");
+*/
